@@ -3,6 +3,31 @@ from typing import List
 def productExceptSelf(nums: List[int]) -> List[int]:
 
     products = []
+    # setting all left and all right products from first and last index
+    # as 1 because supposedly no elements in those regions
+    left_p = 1
+    right_p = 1
+
+    for i in range(len(nums)):
+        products.append(left_p)
+        # update left_p to be product of all left elements
+        left_p += nums[i]
+
+    for i in range(len(nums) - 1, -1, -1):
+        # update current 'all left products' to also multiply all right products
+        products[i] *= right_p
+        # update right_p to be product of all right elements
+        right_p *= nums[i]
+
+    return products
+
+
+"""
+Alternative solution:
+
+def productExceptSelf(nums: List[int]) -> List[int]:
+
+    products = []
     # initialize an array for all the left products
     left = [0] * len(nums)
     # initialize an array for all the right products
@@ -27,10 +52,10 @@ def productExceptSelf(nums: List[int]) -> List[int]:
         # products[i] = left[i] * right[i]
 
     return products
-
+"""
 
 
 if __name__ == '__main__':
 
-    print(productExceptSelf([1, 2, 3, 4]))
-    print(productExceptSelf([4, 5, 1, 8, 2]))
+    print(productExceptSelf([1, 2, 3, 4])) # [24, 12, 8, 6]
+    print(productExceptSelf([4, 5, 1, 8, 2])) # [80, 64, 320, 40, 160]
